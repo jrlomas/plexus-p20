@@ -86,9 +86,8 @@ The m68000 multilib libgcc (at
 must be used for helper functions. The default libgcc contains 68020-only
 instructions. See [Bug #1](#bug-1-68020-instructions-in-libgcc-helpers).
 
-The Plexus system libraries (`crt0.o`, `libc.a`, `libtermlib.a`, etc.) must
-be extracted from a disk image into a host-accessible directory (e.g.,
-`/tmp/plexus_root/root/lib/`).
+The Plexus system libraries (`crt0.o`, `libc.a`, `libtc.a`, etc.) and
+system headers are included in the `sysroot/` directory.
 
 ## Building the Tools
 
@@ -119,7 +118,7 @@ identical command-line interfaces.
 
 ```bash
 m68k-elf-gcc -c -O -m68010 -std=gnu89 -fno-builtin -Dm68 \
-    -I/tmp/plexus_root/root/usr/include \
+    -Isysroot/usr/include \
     -o output.elf.o input.c
 ```
 
@@ -803,7 +802,7 @@ gcc -O -Wall -o cofflink cofflink.c
 # Compile each source file
 for f in main var init eval ...; do
     m68k-elf-gcc -c -O -DSHELL -m68010 -std=gnu89 -fno-builtin -Dm68 \
-        -I/tmp/plexus_root/root/usr/include -Iash-plexus \
+        -Isysroot/usr/include -Iash-plexus \
         -o ash-plexus/${f}.elf.o ash-plexus/${f}.c
     ./elf2coff ash-plexus/${f}.elf.o ash-plexus/${f}.o
 done
@@ -816,9 +815,9 @@ done
 
 # Link
 ./cofflink -o ash.coff \
-    /tmp/plexus_root/root/lib/crt0.o \
+    sysroot/lib/crt0.o \
     ash-plexus/*.o \
-    -L/tmp/plexus_root/root/lib -lc
+    -Lsysroot/lib -lc
 ```
 
 ### Run on emulator

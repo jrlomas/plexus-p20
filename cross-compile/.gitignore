@@ -6,4 +6,7 @@ cofflink
 *.o
 *.elf.o
 *.coff
+
+# But include sysroot files
+!sysroot/**
 __pycache__/
