@@ -1,0 +1,9 @@
+# Built tools
+elf2coff
+cofflink
+
+# Build artifacts
+*.o
+*.elf.o
+*.coff
+__pycache__/
